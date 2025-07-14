@@ -7,7 +7,7 @@ import { Response } from 'express';
 export class SignatureController {
   constructor(private readonly signatureService: SignatureService) {}
 
-  @Post()
+  @Post('signatures')
   create(@Body() createSignatureDto: CreateSignatureDto) {
     return this.signatureService.createSignature(createSignatureDto);
   }
