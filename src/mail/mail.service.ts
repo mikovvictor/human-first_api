@@ -10,7 +10,7 @@ export class MailService {
     this.transporter = nodemailer.createTransport({
       host: this.configService.get<string>('SMTP_HOST', 'smtp.resend.com'),
       port: parseInt(this.configService.get<string>('SMTP_PORT', '465')),
-      secure: false,
+      secure: true,
       auth: {
         user: this.configService.get<string>('SMTP_USER'),
         pass: this.configService.get<string>('SMTP_PASS'),
@@ -19,10 +19,11 @@ export class MailService {
   }
 
   async sendOtpEmail(to: string, otpCode: string) {
+    console.log("Send OTP Email Params: ", "To: ", to, "OTP Code: ", otpCode)
     const mailOptions = {
       from: this.configService.get<string>(
         'EMAIL_FROM',
-        '"Human First" <info@humansarefirst.org>',
+        'info@humansarefirst.org',
       ),
       to,
       subject: 'Verify your email',
@@ -33,7 +34,11 @@ export class MailService {
         <p>This code will expire in 10 minutes.</p>
       `,
     };
-
-    await this.transporter.sendMail(mailOptions);
+    try {
+      await this.transporter.sendMail(mailOptions);
+    } catch (error) {
+      console.error('Error sending OTP email: ', error);
+      throw error;
+    }
   }
 }
