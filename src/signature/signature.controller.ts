@@ -1,6 +1,7 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Options, Res } from '@nestjs/common';
 import { SignatureService } from './signature.service';
 import { CreateSignatureDto } from './dto/create-signature.dto';
+import { Response } from 'express';
 
 @Controller('signatures')
 export class SignatureController {
@@ -37,5 +38,15 @@ export class SignatureController {
   async getSubscribers() {
     return this.signatureService.getAllSubscribedEmails();
   }
+
+  @Options('*')
+  handleGlobalPreflight(@Res() res: Response) {
+    res.set({
+      'Access-Control-Allow-Origin': 'https://humansarefirst.org',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    });
+    res.status(204).send();
+}
 
 }
