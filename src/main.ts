@@ -7,7 +7,7 @@ async function bootstrap() {
     origin: ['https://humans-first.vercel.app/', 'http://localhost:3000','https://humansarefirst.org'],
     allowedHeaders: [
       'Content-Type',
-      'Authorization',
+      // 'Authorization',
      ],
     methods: [
       'GET',
