@@ -8,8 +8,8 @@ export class MailService {
 
   constructor(private readonly configService: ConfigService) {
     this.transporter = nodemailer.createTransport({
-      host: this.configService.get<string>('SMTP_HOST', 'smtp.gmail.com'),
-      port: parseInt(this.configService.get<string>('SMTP_PORT', '587')),
+      host: this.configService.get<string>('SMTP_HOST', 'smtp.resend.com'),
+      port: parseInt(this.configService.get<string>('SMTP_PORT', '465')),
       secure: false,
       auth: {
         user: this.configService.get<string>('SMTP_USER'),
@@ -22,7 +22,7 @@ export class MailService {
     const mailOptions = {
       from: this.configService.get<string>(
         'EMAIL_FROM',
-        '"Human First" <uromgoelisha@gmail.com>',
+        '"Human First" <info@humansarefirst.org>',
       ),
       to,
       subject: 'Verify your email',
