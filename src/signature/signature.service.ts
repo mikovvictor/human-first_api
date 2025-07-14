@@ -17,8 +17,14 @@ export class SignatureService {
   async createSignature(dto: CreateSignatureDto) {
     const otp = this.generateOTP();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+    let existing;
 
-    const existing = await this.signatureRepo.findOne({ where: { email: dto.email } });
+    try {
+      existing = await this.signatureRepo.findOne({ where: { email: dto.email } });
+    } catch (error) {
+      console.error('Error creating signature: ', error);
+      throw error;
+    }
 
     if (existing) {
       if (existing.isVerified) {
@@ -27,17 +33,32 @@ export class SignatureService {
 
       existing.otpCode = otp;
       existing.otpExpiresAt = expiresAt;
-      await this.signatureRepo.save(existing);
+      try {
+        await this.signatureRepo.save(existing);
+      } catch (error) {
+        console.error('Error saving existing signature: ', error);
+        throw error;
+      }
     } else {
       const signature = this.signatureRepo.create({
         ...dto,
         otpCode: otp,
         otpExpiresAt: expiresAt,
       });
-      await this.signatureRepo.save(signature);
+      try {
+        await this.signatureRepo.save(signature);
+      } catch (error) {
+        console.error('Error saving new signature: ', error);
+        throw error;
+      }
     }
 
-    await this.mailService.sendOtpEmail(dto.email, otp);
+    try {
+      await this.mailService.sendOtpEmail(dto.email, otp);
+    } catch (error) {
+      console.error('Error sending OTP email: ', error);
+      throw error;
+    }
     return { message: 'OTP sent to your email.' };
   }
 
