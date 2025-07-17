@@ -9,13 +9,21 @@ export class MailService {
   constructor(private readonly configService: ConfigService) {
     this.transporter = nodemailer.createTransport({
       host: this.configService.get<string>('SMTP_HOST', 'smtp.resend.com'),
-      port: parseInt(this.configService.get<string>('SMTP_PORT', '465')),
-      secure: true,
+      port: parseInt(this.configService.get<string>('SMTP_PORT', '587')),
+      secure: false, 
       auth: {
         user: this.configService.get<string>('SMTP_USER'),
         pass: this.configService.get<string>('SMTP_PASS'),
       },
     });
+    //   host: this.configService.get<string>('SMTP_HOST', 'smtp.resend.com'),
+    //   port: parseInt(this.configService.get<string>('SMTP_PORT', '465')),
+    //   secure: true,
+    //   auth: {
+    //     user: this.configService.get<string>('SMTP_USER'),
+    //     pass: this.configService.get<string>('SMTP_PASS'),
+    //   },
+    // });
   }
 
   async sendOtpEmail(to: string, otpCode: string) {

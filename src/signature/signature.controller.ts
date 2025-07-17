@@ -43,7 +43,14 @@ export class SignatureController {
   handleGlobalPreflight(@Res() res: Response) {
     res.set({
       'Access-Control-Allow-Origin': 'https://humansarefirst.org',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Methods': [
+        'https://humans-first.vercel.app',
+        'http://localhost:3000',
+        'https://humansarefirst.org',
+        'https://preview--humans-first.lovable.app',
+        'https://lovable.dev/projects/89347184-5342-4275-8513-4ad4bffbb34b',
+        'https://89347184-5342-4275-8513-4ad4bffbb34b.lovableproject.com'
+      ],
       'Access-Control-Allow-Headers': 'Content-Type',
     });
     res.status(204).send();

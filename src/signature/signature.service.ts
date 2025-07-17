@@ -91,18 +91,13 @@ export class SignatureService {
   private generateOTP(): string {
     return Math.floor(100000 + Math.random() * 900000).toString();
   }
-  
   async countVerified(): Promise<number> {
     const count = await this.signatureRepo.count({
       where: { isVerified: true },
     });
     return count + 9300;
   }
-  // async countVerified(): Promise<number> {
-  //   return this.signatureRepo.count({
-  //     where: { isVerified: true },
-  //   });
-  // }
+
 
   async getTopCountries(limit = 5): Promise<{ country: string; count: number }[]> {
     return this.signatureRepo
